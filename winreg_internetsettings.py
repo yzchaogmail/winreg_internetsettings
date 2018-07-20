@@ -4,6 +4,14 @@ import winreg
 #表项路径
 xpath = "Software\Microsoft\Windows\CurrentVersion\Internet Settings"
 
+def getProxy():
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,xpath)
+        proxyEnable = winreg.QueryValueEx(key,"ProxyEnable")
+        return proxyEnable
+    except Exception as e:
+        proxyEnable = "Error: " + str(e.args)
+        return proxyEnable
 
 # 设定代理,enable:是否开启,proxyIp:代理服务器ip及端口,IgnoreIp:忽略代理的ip或网址
 def setProxy(enable, proxyIp, IgnoreIp):
@@ -35,22 +43,27 @@ def disableProxy():
 
 
 def main():
-    place = input("\n\nInternet Settings Proxy: ?(open or close)\n")
+    print("Internet Explore ProxyEnable = "+ str(getProxy()))
+
+    place = input("Internet Settings Proxy: ? (open / close or exit)\n")
     try:
         if place == "close":
             disableProxy()
         elif place == "open":
             enableProxy()
+        elif place == "exit":
+            print("Do nothing.")
         else:
-            print("please input 'open' or 'close'(Internet Settings Proxy)!")
+            print("please input 'open' / 'close' or 'exit' !")
             main()
     except Exception as e:
         print("ERROR: " + str(e.args))
-    finally:
+    if place != "exit":
         os.system('taskkill /F /IM  iexplore.exe')
         os.system('iexplore.exe')
-        place2 = input("Press ENTER to close ...\n")
-#   place2 = input("Any key to close ...\n")
+
+    place2 = input("Press ENTER to close ...\n")
+
 
 
 if __name__ == '__main__':
