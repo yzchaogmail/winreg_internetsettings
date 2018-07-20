@@ -1,0 +1,1 @@
+"C:\Program Files\Python36\python.exe" "D:\GitHub\yzchaogmail\winreg_internetsettings\winreg_internetsettings.py"
